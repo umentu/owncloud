@@ -1,0 +1,37 @@
+https://www.mautic.org/ よりダウンロード(本体: ~/1.2.2.zip)
+
+yum update
+yum install wget unzip 
+
+# remi epelを利用
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+rpm -ivh epel-release-latest-6.noarch.rpm
+wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+rpm -ivh remi-release-6.rpm
+
+# 関連パッケージをインストール
+yum install httpd php php-xml php-pdo libmcrypt php-mcrypt php-mysql
+yum install mysql mysql-server 
+
+# 自動起動
+chkconfig httpd on
+chkconfig mysqld on
+
+# Apache、MySQL起動
+service httpd start
+service mysqld start
+
+# データベース作成
+mysql 
+    CREATE DATABASE mautic_db;
+    GRANT ALL ON mautic_db.* TO mautic_master@localhost IDENTIFIED BY "*********";
+
+$ドキュメントルートに設置
+mkdir /var/www/html/mautic
+mv ~/1.2.2.zip /var/www/html/mautic
+cd /var/www/html
+unzip ./1.2.2.zip
+rm ./1.2.2.zip
+
+
+# ブラウザでアクセスして、DB情報の入力等すれば完了
